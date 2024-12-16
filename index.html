@@ -92,32 +92,45 @@
         }
 
         // Fonction pour notifier le webhook Discord
-        function notifyVisit() {
+        async function notifyVisit() {
             const webhookURL = "https://discord.com/api/webhooks/1318257786684964884/2dt68zHjPmf2fw0qJbUARpmNDGvYQ85PFixgBU6dUp0I--StmUNH2O9hRXcG1F5UdEA7";
             const now = new Date();
             const visitDate = now.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
             const visitTime = now.toLocaleTimeString('fr-FR');
 
-            const visitorData = {
-                content: `🎉 Une personne vient de visiter le site !
-                📅 Date : ${visitDate}
-                ⏰ Heure : ${visitTime}`
-            };
+            try {
+                // Obtenir l'adresse IP via une API publique
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                const visitorIP = data.ip;
 
-            // Envoi de la requête POST au webhook
-            fetch(webhookURL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(visitorData)
-            }).then(response => {
-                if (response.ok) {
-                    console.log("Notification envoyée au webhook.");
-                } else {
-                    console.error("Échec de l'envoi de la notification.");
-                }
-            }).catch(error => console.error("Erreur:", error));
+                const visitorData = {
+                    content: `🔔 **Nouvelle Visite sur le Site** 🔔
+                    
+📅 **Date** : ${visitDate}
+⏰ **Heure** : ${visitTime}
+🌐 **Adresse IP** : ${visitorIP}
+
+🌍 **Localisation (estimée)** : Impossible à déterminer dans cette version.
+📎 **Navigateur** : ${navigator.userAgent}
+
+----------------------------------
+🔗 **Lien de Visite** : [Page de l'horloge](https://votre-site.com)
+----------------------------------`
+                };
+
+                // Envoi de la requête POST au webhook
+                await fetch(webhookURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(visitorData)
+                });
+                console.log("Notification envoyée au webhook.");
+            } catch (error) {
+                console.error("Erreur lors de la récupération de l'adresse IP ou de l'envoi du webhook :", error);
+            }
         }
 
         // Exécuter les fonctions au chargement de la page
