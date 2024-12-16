@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte à Rebours - Nouvel An</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #2d3436, #636e72, #b2bec3);
+            background-size: 300% 300%;
+            animation: gradientShift 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            text-align: center;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #f1c40f;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #clock, #countdown {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin: 15px 0;
+        }
+
+        #countdown {
+            font-weight: 600;
+            color: #00cec9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bonne Année ! 🎉</h1>
+        <div id="clock">Heure actuelle : 00:00:00</div>
+        <div id="countdown">Temps restant : 0j 0h 0m 0s</div>
+    </div>
+
+    <script>
+        // Fonction pour mettre à jour l'heure en temps réel
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('fr-FR');
+            document.getElementById('clock').textContent = `Heure actuelle : ${timeString}`;
+        }
+
+        // Fonction pour le compte à rebours vers le Nouvel An
+        function updateCountdown() {
+            const now = new Date();
+            const nextYear = now.getFullYear() + 1;
+            const newYear = new Date(`January 1, ${nextYear} 00:00:00`);
+            const diff = newYear - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('countdown').textContent =
+                    `Temps restant : ${days}j ${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                document.getElementById('countdown').textContent = "Bonne Année ! 🎆";
+            }
+        }
+
+        // Fonction pour notifier le webhook Discord
+        function notifyVisit() {
+            const webhookURL = "https://discord.com/api/webhooks/1318257786684964884/2dt68zHjPmf2fw0qJbUARpmNDGvYQ85PFixgBU6dUp0I--StmUNH2O9hRXcG1F5UdEA7";
+            const visitorData = {
+                content: "🎉 Une personne vient de visiter le site !"
+            };
+
+            // Envoi de la requête POST au webhook
+            fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(visitorData)
+            }).then(response => {
+                if (response.ok) {
+                    console.log("Notification envoyée au webhook.");
+                } else {
+                    console.error("Échec de l'envoi de la notification.");
+                }
+            }).catch(error => console.error("Erreur:", error));
+        }
+
+        // Exécuter les fonctions au chargement de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            updateClock();
+            updateCountdown();
+            notifyVisit();
+            setInterval(() => {
+                updateClock();
+                updateCountdown();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
