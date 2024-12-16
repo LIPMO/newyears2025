@@ -94,8 +94,14 @@
         // Fonction pour notifier le webhook Discord
         function notifyVisit() {
             const webhookURL = "https://discord.com/api/webhooks/1318257786684964884/2dt68zHjPmf2fw0qJbUARpmNDGvYQ85PFixgBU6dUp0I--StmUNH2O9hRXcG1F5UdEA7";
+            const now = new Date();
+            const visitDate = now.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+            const visitTime = now.toLocaleTimeString('fr-FR');
+
             const visitorData = {
-                content: "🎉 Une personne vient de visiter le site !"
+                content: `🎉 Une personne vient de visiter le site !
+                📅 Date : ${visitDate}
+                ⏰ Heure : ${visitTime}`
             };
 
             // Envoi de la requête POST au webhook
