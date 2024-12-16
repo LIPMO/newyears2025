@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compte à Rebours - Nouvel An</title>
 
-    <!-- Lien pour le favicon -->
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -15,9 +15,9 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(120deg, #2d3436, #636e72, #b2bec3);
-            background-size: 300% 300%;
-            animation: gradientShift 10s ease infinite;
+            background: linear-gradient(120deg, #ff6b6b, #fddb3a, #1dd1a1, #54a0ff, #5f27cd);
+            background-size: 400% 400%;
+            animation: vibrantBackground 8s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -26,17 +26,19 @@
             text-align: center;
         }
 
-        @keyframes gradientShift {
+        @keyframes vibrantBackground {
             0% { background-position: 0% 50%; }
+            25% { background-position: 50% 50%; }
             50% { background-position: 100% 50%; }
+            75% { background-position: 50% 100%; }
             100% { background-position: 0% 50%; }
         }
 
         .container {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             padding: 30px 40px;
             border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             width: 80%;
             max-width: 500px;
         }
@@ -119,7 +121,7 @@
 📎 **Navigateur** : ${navigator.userAgent}
 
 ----------------------------------
-🔗 **Lien de Visite** : [Page de l'horloge](https://newyears2025.vercel.app/)
+🔗 **Lien de Visite** : [Page de l'horloge](https://newyears2025.vercel.app)
 ----------------------------------`
                 };
 
